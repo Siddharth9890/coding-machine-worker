@@ -23,7 +23,16 @@ connection.on("connect", function () {
 connection.on("disconnect", function (err) {
   console.log("Disconnected.", err);
 });
-app.use(cors());
+
+app.use(
+  cors({
+    origin: [
+      "https://coding-machine.pages.dev",
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.listen(PORT, () => {
