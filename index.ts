@@ -25,12 +25,7 @@ connection.on("disconnect", function (err) {
 });
 
 app.use(
-  cors({
-    origin: [
-      "https://coding-machine.pages.dev",
-    ],
-    credentials: true,
-  })
+  cors()
 );
 
 app.use(express.json());
