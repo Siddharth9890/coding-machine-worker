@@ -3,11 +3,7 @@ import path from "path";
 import fs from "fs";
 import { kill } from "process";
 
-const outPutPath = path.join(__dirname, "output");
-
-if (!fs.existsSync(outPutPath)) fs.mkdirSync(outPutPath, { recursive: true });
-
-const executeCpp = (filePath: string) => {
+const executeCpp = (filePath: string, outPutPath: string) => {
   const jobId = path.basename(filePath).split(".")[0];
   const outPath = path.join(outPutPath, `${jobId}`);
   console.log(outPath);
