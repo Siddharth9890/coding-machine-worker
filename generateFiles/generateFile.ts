@@ -1,10 +1,10 @@
 import path from "path";
+import os from "os";
 import fs from "fs";
 import executePy from "../execute/executePy";
 import executeCpp from "../execute/executeCpp";
-import JobModel from "../models/JobModel";
-const outPutPath = path.join(__dirname, "output");
-const dirPath = path.join(__dirname, "../../tmp/codes");
+const outPutPath = path.join(os.tmpdir(), "/output");
+const dirPath = path.join(os.tmpdir(), "/codes");
 
 // create the file and execute the code
 const generateFile = async (job: any) => {
@@ -23,8 +23,6 @@ const generateFile = async (job: any) => {
     }
     console.log("file to be created ", fileToBeCreated);
     const filePath = path.join(dirPath, fileToBeCreated);
-    console.log("dir path", dirPath);
-    console.log("file path ", filePath);
     fs.writeFileSync(filePath, job.code);
     await job.save();
     let response;

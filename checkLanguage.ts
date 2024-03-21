@@ -10,9 +10,9 @@ export default async function checkLanguage(submissionId: string) {
     job.startedAt = new Date();
     job.status = "processing";
     if (job.language === "java") {
-      generateJavaFile(job);
+      await generateJavaFile(job);
     } else {
-      generateFile(job);
+      await generateFile(job);
     }
   }
 }

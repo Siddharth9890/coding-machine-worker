@@ -6,8 +6,6 @@ import { kill } from "process";
 const executeCpp = (filePath: string, outPutPath: string) => {
   const jobId = path.basename(filePath).split(".")[0];
   const outPath = path.join(outPutPath, `${jobId}`);
-  console.log(outPath);
-  console.log(jobId);
   // `g++ ${filePath} -o ${outPath} && cd ${outPutPath} && ./${jobId}.out `,
   return new Promise((resolve, reject) => {
     const s = exec(
