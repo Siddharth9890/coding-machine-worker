@@ -1,20 +1,23 @@
 import path from "path";
 import fs from "fs";
+import os from "os";
 import executeJava from "../execute/executeJava";
-import * as amqp from "amqp-connection-manager";
 
-const dirPath = path.join(__dirname, "codes");
+const dirPath = path.join(os.tmpdir(), "/codes");
+const outPutPath = path.join(os.tmpdir(), "/output");
 
-if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
-const generateJavaFile = async (
-  job: any,
-  channelWrapper: amqp.ChannelWrapper,
-  data: any
-) => {
+const generateJavaFile = async (job: any) => {
   try {
+    if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+
+    if (!fs.existsSync(outPutPath))
+      fs.mkdirSync(outPutPath, { recursive: true });
+
     const fileToBeCreated = `Main.java`;
     const filePath = path.join(dirPath, fileToBeCreated);
+    console.log("file path", filePath);
     fs.writeFileSync(filePath, job.code);
+    console.log("after write file sync");
     await job.save();
     const response = await executeJava(filePath);
     job.status = "completed";
@@ -22,7 +25,7 @@ const generateJavaFile = async (
     job.completedAt = new Date();
     await job.save();
 
-    channelWrapper.ack(data);
+    return "done";
   } catch (error: any) {
     job.status = "completed";
     // const position = error.stderr.search("error");
@@ -32,7 +35,7 @@ const generateJavaFile = async (
     job.completedAt = new Date();
     await job.save();
 
-    channelWrapper.ack(data);
+    return "done";
   }
 };
 
